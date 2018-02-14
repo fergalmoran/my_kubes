@@ -1,0 +1,12 @@
+#!/usr/bin/with-contenv bash
+
+# copy blocklist-update script
+[[ ! -f /config/blocklist-update.sh ]] && cp \
+	/defaults/blocklist-update.sh /config/blocklist-update.sh
+
+# permissions
+chown abc:abc \
+	/config/settings.json \
+	/config/blocklist-update.sh
+
+chmod 755 /config/blocklist-update.sh

@@ -1,0 +1,67 @@
+apiVersion: v1
+kind: ReplicationController
+metadata:
+  name: brimir
+spec:
+  replicas: 1
+  selector:
+    app: brimir
+  template:
+    metadata:
+      labels:
+        app: brimir
+    spec:
+      nodeSelector:
+        env: production
+      containers:
+      - name: brimir-rails
+        image: kepes/brimir-docker
+        imagePullPolicy: Always
+        ports:
+          - containerPort: 3000
+        env:
+          - name: RAILS_SERVE_STATIC_FILES
+            value: 'true'
+          - name: MYSQL_HOST
+            value: 127.0.0.1
+          - name: MYSQL_DATABASE
+            value: brimir_prod
+          - name: MYSQL_USER
+            value: brimir_prod
+          - name: MYSQL_PASSWORD
+            value: rJfwYsKVLaxP
+          - name: SMTP_ADDRESS
+            value: smtp.gmail.com
+          - name: SMTP_PORT
+            value: 587
+          - name: SMTP_DOMAIN
+            value: podnoms.com
+          - name: SMTP_USERNAME
+            value: fergal.moran@podnoms.com
+          - name: SMTP_PASSWORD
+            value: F8r3Knuts
+        volumeMounts:
+          - name: niles-storage
+            mountPath: /var/log/unicorn
+            subPath: "logs"
+      - name: brimir-mysql
+        image: mysql
+        args: ["--character-set-server=utf8", "--collation-server=utf8_unicode_ci"]
+        env:
+          - name: MYSQL_DATABASE
+            value: brimir_prod
+          - name: MYSQL_ROOT_PASSWORD
+            value: tmppwd
+          - name: MYSQL_USER
+            value: brimir_prod
+          - name: MYSQL_PASSWORD
+            value: rJfwYsKVLaxP
+        volumeMounts:
+          - name: niles-storage
+            mountPath: /var/lib/mysql
+            subPath: "mysql"
+      securityContext:
+        fsGroup: 1234
+        supplementalGroups: [5678]
+        seLinuxOptions:
+          level: "s0:c123,c456"

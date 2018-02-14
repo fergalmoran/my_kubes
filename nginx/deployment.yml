@@ -1,0 +1,33 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nginx
+spec:
+  selector:
+    matchLabels:
+      app: nginx
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: nginx
+    spec:
+      containers:
+        - name: nginx
+          image: armhfbuild/nginx        
+          ports:
+            - containerPort: 80
+          # volumeMounts:
+          #   - name: niles-storage
+          #     mountPath: /etc/nginx
+          #     subPath: "nginx/etc/nginx"
+          #   - name: niles-storage
+          #     mountPath: /etc/letsencrypt
+          #     subPath: "nginx/etc/letsencrypt"
+          #   - name: niles-storage
+          #     mountPath: /var/www
+          #     subPath: "nginx/www/"
+      # volumes:
+      #   - name: niles-storage
+      #     persistentVolumeClaim:
+      #       claimName: niles-storage-claim

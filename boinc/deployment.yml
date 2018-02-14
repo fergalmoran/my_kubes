@@ -1,0 +1,30 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: boinc
+spec:
+  selector:
+    matchLabels:
+      app: boinc
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: boinc
+    spec:
+      containers:
+        - name: boinc
+          image: fergalmoran/boinc
+          ports:
+            - containerPort: 31416
+          volumeMounts:
+            - name: niles-storage
+              mountPath: /var/lib/boinc-client/
+              subPath: "boinc/var/lib/boinc-client/"
+            - name: niles-storage
+              mountPath: /etc/boinc-client/
+              subPath: "boinc/etc/boinc-client/"
+      volumes:
+        - name: niles-storage
+          persistentVolumeClaim:
+            claimName: niles-storage-claim

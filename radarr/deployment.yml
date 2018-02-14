@@ -1,0 +1,41 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: radarr
+spec:
+  selector:
+    matchLabels:
+      app: radarr
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: radarr
+    spec:
+      containers:
+        - name: radarr
+          image: lsioarmhf/radarr
+          env:
+            - name: PUID
+              value: "1000"
+            - name: PGID
+              value: "1000"
+          ports:
+            - containerPort: 7878
+          volumeMounts:
+            - name: niles-media
+              mountPath: /movies
+              subPath: "Movies"
+            - name: niles-storage
+              mountPath: /config
+              subPath: "radarr"
+            - name: niles-media
+              mountPath: /srv/media/staging/transmission
+              subPath: "staging/transmission"
+      volumes:
+        - name: niles-media
+          persistentVolumeClaim:
+            claimName: niles-media-claim
+        - name: niles-storage
+          persistentVolumeClaim:
+            claimName: niles-storage-claim

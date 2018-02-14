@@ -1,0 +1,26 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: devbox
+spec:
+  selector:
+    matchLabels:
+      app: devbox
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: devbox
+    spec:
+      containers:
+        - name: devbox
+          image: fergalmoran/devbox
+          ports:
+            - containerPort: 22
+          volumeMounts:
+            - name: niles-dev
+              mountPath: /dev
+      volumes:
+        - name: niles-dev
+          persistentVolumeClaim:
+            claimName: niles-dev-claim

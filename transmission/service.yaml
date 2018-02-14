@@ -1,0 +1,22 @@
+kind: Service
+apiVersion: v1
+metadata:
+  name: transmission
+spec:
+  type: NodePort
+  selector:
+    app: transmission
+  ports:
+  - name: webui
+    protocol: TCP
+    port: 9091
+    nodePort: 30000
+  - name: exttcp
+    protocol: TCP
+    port: 30006
+    nodePort: 30006
+  - name: extudp
+    protocol: UDP
+    port: 30006
+    nodePort: 30006
+    

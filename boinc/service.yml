@@ -1,0 +1,12 @@
+kind: Service
+apiVersion: v1
+metadata:
+  name: boinc
+spec:
+  type: NodePort
+  selector:
+    app: boinc
+  ports:
+  - protocol: TCP
+    port: 31416
+    nodePort: 30009

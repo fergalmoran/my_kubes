@@ -1,0 +1,42 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: sonarr
+spec:
+  selector:
+    matchLabels:
+      app: sonarr
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: sonarr
+    spec:
+      containers:
+        - name: sonarr
+          image: lsioarmhf/sonarr
+          env:
+            - name: PUID
+              value: "1000"
+            - name: PGID
+              value: "1000"
+          ports:
+            - containerPort: 8989
+          volumeMounts:
+            - name: niles-media
+              mountPath: /srv/media
+            - name: niles-media
+              mountPath: /tv
+            - name: niles-storage
+              mountPath: /config
+              subPath: "sonarr"
+            - name: niles-media
+              mountPath: /srv/media/staging/transmission
+              subPath: "staging/transmission"
+      volumes:
+        - name: niles-media
+          persistentVolumeClaim:
+            claimName: niles-media-claim
+        - name: niles-storage
+          persistentVolumeClaim:
+            claimName: niles-storage-claim

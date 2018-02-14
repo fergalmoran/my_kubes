@@ -1,0 +1,50 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: plex
+spec:
+  selector:
+    matchLabels:
+      app: plex
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: plex
+    spec:
+      containers:
+        - name: plex
+          image: lsioarmhf/plex
+          env:
+            - name: PLEX_CLAIM
+              value: "CLAIM-ILJ99SNBHFYNKJD5F9NO"
+            - name: PUID
+              value: "1000"
+            - name: PGID
+              value: "1000"
+          volumeMounts:
+            - name: niles-storage
+              mountPath: /config
+              subPath: "plex"
+            - name: niles-media
+              mountPath: /media
+          ports:
+          - containerPort: 32400
+            protocol: UDP
+          - containerPort: 32400
+            protocol: TCP
+          - containerPort: 32469
+            protocol: TCP
+          - containerPort: 32469
+            protocol: UDP
+          - containerPort: 5353
+            protocol: UDP
+          - containerPort: 1900
+            protocol: UDP
+      volumes:
+        - name: niles-media
+          persistentVolumeClaim:
+            claimName: niles-media-claim
+        - name: niles-storage
+          persistentVolumeClaim:
+            claimName: niles-storage-claim

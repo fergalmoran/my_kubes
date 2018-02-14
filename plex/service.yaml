@@ -1,0 +1,12 @@
+kind: Service
+apiVersion: v1
+metadata:
+  name: plex
+spec:
+  type: NodePort
+  selector:
+    app: plex
+  ports:
+  - protocol: TCP
+    port: 32400
+    nodePort: 30005
