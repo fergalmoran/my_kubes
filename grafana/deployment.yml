@@ -17,14 +17,7 @@ spec:
           image: fg2it/grafana-armhf:v4.1.2
           ports:
             - containerPort: 3000
-          volumeMounts:
-            - name: niles-storage
-              mountPath: /var/lib/grafana/
-              subPath: "grafana/var/lib/grafana"
-            - name: niles-storage
-              mountPath: /usr/share/grafana/
-              subPath: "grafana/usr/share/grafana"
-      volumes:
-        - name: niles-storage
-          persistentVolumeClaim:
-            claimName: niles-storage-claim
+          env:
+            - name: GF_INSTALL_PLUGINS
+              value: grafana-clock-panel,grafana-simple-json-datasource,raintank-kubernetes-app
+
