@@ -19,5 +19,5 @@ spec:
             - containerPort: 3000
           env:
             - name: GF_INSTALL_PLUGINS
-              value: grafana-clock-panel,grafana-simple-json-datasource,raintank-kubernetes-app
+              value: grafana-clock-panel,grafana-simple-json-datasource,raintank-kubernetes-app,grafana-kubernetes-app
 
