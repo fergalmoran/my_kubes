@@ -1,0 +1,13 @@
+kind: Service
+apiVersion: v1
+metadata:
+  name: icecast
+spec:
+  type: NodePort
+  selector:
+    app: icecast
+  ports:
+  - name: webui
+    protocol: TCP
+    port: 8000
+    nodePort: 30012

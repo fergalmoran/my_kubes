@@ -1,0 +1,38 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: bind
+spec:
+  selector:
+    matchLabels:
+      app: bind
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: bind
+    spec:
+      containers:
+        - name: bind
+          image: fergalmoran/bind
+          env:
+            - name: ROOT_PASSWORD
+              value: adNK3C4jMW6xccFjucvz9githGjUaBRt
+          ports:
+            - containerPort: 53
+              protocol: TCP
+            - containerPort: 53
+              protocol: UDP
+            - containerPort: 10000
+              protocol: TCP
+          volumeMounts:
+            - name: niles-storage
+              mountPath: /data
+              subPath: "bind"
+            - name: niles-storage
+              mountPath: /var/log/bind
+              subPath: "bind/log"
+      volumes:
+        - name: niles-storage
+          persistentVolumeClaim:
+            claimName: niles-storage-claim

@@ -1,0 +1,21 @@
+kind: Service
+apiVersion: v1
+metadata:
+  name: bind
+spec:
+  type: NodePort
+  selector:
+    app: bind
+  ports:
+      - protocol: TCP
+        name: tcp
+        port: 53
+        nodePort: 30010
+      - protocol: UDP
+        name: udp
+        port: 53
+        nodePort: 30010
+      - protocol: TCP
+        name: webmin
+        port: 10000
+        nodePort: 30011
