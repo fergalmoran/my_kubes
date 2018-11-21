@@ -23,7 +23,7 @@ spec:
             - name: VIRTUAL_HOST
               value: ns1.bitchmints.com
             - name: WEBPASSWORD
-              value: F8r3Knuts
+              value: TopSecret
             - name: WEB_PORT
               value: "8080"
             - name: ServerIP
