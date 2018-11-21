@@ -1,0 +1,13 @@
+kind: Service
+apiVersion: v1
+metadata:
+  name: emby
+spec:
+  type: NodePort
+  selector:
+    app: emby
+  ports:
+  - name: webui
+    protocol: TCP
+    port: 8096
+    nodePort: 30013

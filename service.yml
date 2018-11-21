@@ -1,0 +1,32 @@
+kind: Service
+apiVersion: v1
+metadata:
+  name: pihole
+spec:
+  type: LoadBalancer
+  selector:
+    app: pihole
+  ports:
+      - protocol: TCP
+        name: tcp
+        port: 53
+        targetPort: 53
+        externalIP: 10.1.1.80
+      - protocol: UDP
+        name: udp
+        port: 53
+        targetPort: 53
+        externalIP: 10.1.1.80
+      - protocol: UDP
+        name: udp-dhcpd
+        port: 67
+        targetPort: 67
+        externalIP: 10.1.1.80
+  type: NodePort
+  selector:
+    app: pihole
+  ports:
+      - protocol: TCP
+        name: webui
+        port: 80
+        targetPort: 30017

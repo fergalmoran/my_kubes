@@ -1,0 +1,52 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: pihole
+spec:
+  selector:
+    matchLabels:
+      app: pihole
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: pihole
+    spec:
+      containers:
+        - name: pihole
+          image: pihole/pihole:v4.0_armhf
+          securityContext:
+            capabilities:
+              add:
+               - NET_ADMIN
+          env:
+            - name: VIRTUAL_HOST
+              value: ns1.bitchmints.com
+            - name: WEBPASSWORD
+              value: F8r3Knuts
+            - name: WEB_PORT
+              value: "8080"
+            - name: ServerIP
+              value: 10.1.1.80
+            - name: DNS1
+              value: 8.8.8.8
+          ports:
+            - containerPort: 53
+              protocol: TCP
+            - containerPort: 53
+              protocol: UDP
+            - containerPort: 67
+              protocol: UDP
+            - containerPort: 80
+              protocol: TCP
+          volumeMounts:
+            - name: niles-storage
+              mountPath: /etc/pihole
+              subPath: "pihole/pihole"
+            - name: niles-storage
+              mountPath: /etc/dnsmasq.d
+              subPath: "pihole/dnsmasq"
+      volumes:
+        - name: niles-storage
+          persistentVolumeClaim:
+            claimName: niles-storage-claim

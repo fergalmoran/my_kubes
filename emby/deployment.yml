@@ -1,0 +1,36 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: emby
+spec:
+  selector:
+    matchLabels:
+      app: emby
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: emby
+    spec:
+      containers:
+        - name: emby
+          image: emby/embyserver_arm32v7
+          ports:
+            - containerPort: 8096
+          volumeMounts:
+            - name: niles-media
+              subPath: "TV Shows"
+              mountPath: /mnt/tv
+            - name: niles-media
+              subPath: "Movies"
+              mountPath: /mnt/movies
+            - name: niles-storage
+              subPath: "emby"
+              mountPath: /config
+      volumes:
+        - name: niles-media
+          persistentVolumeClaim:
+            claimName: niles-media-claim
+        - name: niles-storage
+          persistentVolumeClaim:
+            claimName: niles-storage-claim

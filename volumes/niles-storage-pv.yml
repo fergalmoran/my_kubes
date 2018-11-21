@@ -9,5 +9,5 @@ spec:
   - ReadWriteMany
   nfs: 
     path: /srv/kubes/configs/
-    server: niles
+    server: 10.1.1.3
   persistentVolumeReclaimPolicy: Recycle

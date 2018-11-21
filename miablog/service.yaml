@@ -1,0 +1,17 @@
+kind: Service
+apiVersion: v1
+metadata:
+  name: miablog
+spec:
+  type: NodePort
+  selector:
+    app: miablog
+  ports:
+  - name: webui
+    protocol: TCP
+    port: 80
+    nodePort: 30014
+  - name: mysql
+    protocol: TCP
+    port: 3306
+    nodePort: 30050

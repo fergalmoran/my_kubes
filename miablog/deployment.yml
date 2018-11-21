@@ -1,0 +1,51 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: miablog
+spec:
+  selector:
+    matchLabels:
+      app: miablog
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: miablog
+    spec:
+      containers:
+        - name: wordpress
+          image: arm32v7/wordpress
+          env:
+            - name: WORDPRESS_DB_HOST
+              value: 127.0.0.1
+            - name: WORDPRESS_DB_NAME
+              value: miablog
+            - name: WORDPRESS_DB_USER
+              value: miablog
+            - name: WORDPRESS_DB_PASSWORD
+              value: miablog
+          ports:
+            - containerPort: 80
+          volumeMounts:
+            - name: niles-storage
+              mountPath: /var/www/html/wp-content/
+              subPath: "miablog/html/wp-content/"
+        - name: mysql
+          image: hypriot/rpi-mysql:latest
+          env:
+            - name: MYSQL_DATABASE
+              value: miablog
+            - name: MYSQL_ROOT_PASSWORD
+              value: miablog
+            - name: MYSQL_USER
+              value: miablog
+            - name: MYSQL_PASSWORD
+              value: miablog
+          volumeMounts:
+            - name: niles-storage
+              mountPath: /var/lib/mysql
+              subPath: "miablog/mysql/"
+      volumes:
+        - name: niles-storage
+          persistentVolumeClaim:
+            claimName: niles-storage-claim
